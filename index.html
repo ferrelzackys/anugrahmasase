@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antrean Massage - Anugrah Sport Masase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { 
+      background: linear-gradient(135deg, #0b1d3a 0%, #102a45 100%); 
+      margin: 0; 
+      padding: 20px 15px; 
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card { 
+      width: 100%; 
+      max-width: 440px; 
+      background: #ffffff; 
+      padding: 30px 25px; 
+      border-radius: 20px; 
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3); 
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #d4af37, #f3e5ab, #d4af37);
+    }
+    .logo-container { text-align: center; margin-bottom: 15px; }
+    .logo-container img { 
+      width: 110px; 
+      height: 110px; 
+      object-fit: contain;
+      filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.15));
+    }
+    h2 { color: #0b1d3a; text-align: center; margin: 0; font-size: 20px; font-weight: 700; }
+    p.subtitle { text-align: center; color: #d4af37; font-size: 13px; font-weight: 600; margin: 4px 0 20px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    label { font-weight: 600; font-size: 13px; display: block; margin-top: 14px; color: #2c3e50; }
+    input { 
+      width: 100%; 
+      padding: 12px 14px; 
+      margin-top: 6px; 
+      border: 1.5px solid #e2e8f0; 
+      border-radius: 10px; 
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: #f8fafc;
+    }
+    input:focus { border-color: #0b1d3a; outline: none; background: #fff; box-shadow: 0 0 0 3px rgba(11,29,58,0.1); }
+    
+    button { 
+      width: 100%; 
+      padding: 14px; 
+      background: linear-gradient(135deg, #0b1d3a 0%, #1a3a60 100%); 
+      color: #f3e5ab; 
+      border: 1px solid #d4af37; 
+      border-radius: 10px; 
+      font-weight: 700; 
+      margin-top: 24px; 
+      cursor: pointer; 
+      font-size: 15px; 
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(11,29,58,0.25);
+      transition: transform 0.2s;
+    }
+    button:active { transform: scale(0.98); }
+    
+    #ticket { 
+      display: none; 
+      text-align: center; 
+      background: #f8fafc; 
+      padding: 25px 20px; 
+      border-radius: 16px; 
+      border: 2px dashed #d4af37; 
+      margin-top: 10px; 
+    }
+    .ticket-header { font-size: 14px; color: #64748b; font-weight: 600; text-transform: uppercase; }
+    .number { font-size: 48px; font-weight: 700; color: #0b1d3a; margin: 10px 0; text-shadow: 1px 1px 0px #d4af37; }
+    .display-name { font-size: 15px; font-weight: 600; color: #334155; margin-bottom: 15px; }
+    .note { 
+      font-size: 12px; 
+      color: #475569; 
+      background: #fff9e6; 
+      padding: 10px; 
+      border-radius: 8px; 
+      border-left: 4px solid #d4af37;
+      text-align: left;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo-container">
+    <img src="logo anugerah .JPG.jpg" alt="Logo Anugrah Sport Masase">
+  </div>
+  <h2>ANUGRAH SPORT MASASE</h2>
+  <p class="subtitle">Latbar 1st Anniversary Delta Trail Running</p>
+  
+  <form id="queueForm">
+    <label>Nama Lengkap</label>
+    <input type="text" name="nama" required placeholder="Masukkan nama lengkap Anda">
+    
+    <label>Nomor BIB</label>
+    <input type="number" name="bib" required placeholder="Contoh: 1024">
+    
+    <label>Nomor WhatsApp</label>
+    <input type="tel" name="wa" required placeholder="Contoh: 081234567890">
+    
+    <label>Upload Bukti Follow IG @anugrahsportmasase</label>
+    <input type="file" id="fileInput" accept="image/*" required>
+    
+    <button type="submit" id="submitBtn">AMBIL NOMOR ANTREAN</button>
+  </form>
+
+  <div id="ticket">
+    <div class="ticket-header">Nomor Antrean Anda</div>
+    <div class="number" id="queueDisplay">DTR-000</div>
+    <div class="display-name" id="displayName"></div>
+    <div class="note">
+      ⚠️ <strong>PENTING:</strong> Silakan <strong>Screenshot</strong> layar ini dan tunjukkan kepada tim medis/masase di booth saat nomor Anda dipanggil.
+    </div>
+  </div>
+</div>
+
+<script>
+  const scriptURL = "https://script.google.com/macros/s/AKfycbw-G2m7xDJC4Gggnw6NWBGskiDu_I1b8KXhxGZ4dFwfJsCUJKqwrOJu4qx_9QUxq6cMiA/exec";
+  const form = document.getElementById('queueForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const ticket = document.getElementById('ticket');
+  const fileInput = document.getElementById('fileInput');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    submitBtn.innerText = "MENGUNGGAH & MEMPROSES...";
+    submitBtn.disabled = true;
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(evt) {
+      const base64File = evt.target.result;
+      
+      const payload = new URLSearchParams();
+      payload.append("nama", form.nama.value);
+      payload.append("bib", form.bib.value);
+      payload.append("wa", form.wa.value);
+      payload.append("buktiFile", base64File);
+      payload.append("fileName", file.name);
+
+      fetch(scriptURL, { 
+        method: 'POST', 
+        body: payload
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.result === 'success') {
+          form.style.display = 'none';
+          document.getElementById('queueDisplay').innerText = data.queueNumber;
+          document.getElementById('displayName').innerText = form.nama.value + " (BIB: " + form.bib.value + ")";
+          ticket.style.display = 'block';
+        } else {
+          throw new Error(data.error || 'Terjadi kesalahan sistem');
+        }
+      })
+      .catch(error => {
+        alert('Gagal mengambil nomor: ' + error.message);
+        submitBtn.innerText = "AMBIL NOMOR ANTREAN";
+        submitBtn.disabled = false;
+      });
+    };
+
+    reader.readAsDataURL(file);
+  });
+</script>
+
+</body>
+</html>
