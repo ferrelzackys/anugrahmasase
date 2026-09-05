@@ -175,44 +175,47 @@
     }
 
     .logo-wrapper {
-      width: 108px;
-      height: 108px;
+    .logo-wrapper {
+  width: 145px;
+  height: 145px;
 
-      margin: 0 auto 18px;
+  margin: 4px auto 24px;
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-      background: linear-gradient(
-        145deg,
-        #ffffff,
-        #f6f7f9
-      );
+  background: linear-gradient(
+    145deg,
+    #ffffff,
+    #f7f7f7
+  );
 
-      border-radius: 50%;
+  border-radius: 50%;
 
-      border: 1px solid rgba(197,160,89,.35);
+  border: 1px solid rgba(197,160,89,.40);
 
-      box-shadow:
-        0 10px 25px rgba(11,29,58,.13),
-        0 0 0 7px rgba(197,160,89,.07);
-    }
+  box-shadow:
+    0 14px 32px rgba(11,29,58,.14),
+    0 0 0 9px rgba(197,160,89,.06),
+    0 0 0 18px rgba(197,160,89,.025);
+}
 
-    .logo-wrapper img {
-      width: 88px;
-      height: 88px;
-      object-fit: contain;
+.logo-wrapper img {
+  width: 125px;
+  height: 125px;
 
-      filter:
-        drop-shadow(0 5px 10px rgba(0,0,0,.12));
+  object-fit: contain;
 
-      transition: .3s ease;
-    }
+  filter:
+    drop-shadow(0 7px 14px rgba(0,0,0,.15));
 
-    .logo-wrapper:hover img {
-      transform: scale(1.04);
-    }
+  transition: .3s ease;
+}
+
+.logo-wrapper:hover img {
+  transform: scale(1.04);
+      }
 
     .brand {
       color: var(--navy);
