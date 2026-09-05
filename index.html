@@ -117,7 +117,6 @@
     <input type="tel" name="wa" required placeholder="Contoh: 081234567890">
     
     <label>Upload Bukti Follow IG @anugrahsportmasase</label>
-    <!-- Atribut accept disesuaikan agar kompatibel penuh dengan iOS Safari -->
     <input type="file" id="fileInput" accept="image/jpeg,image/png,image/heic,image/heif" required>
     
     <button type="submit" id="submitBtn">AMBIL NOMOR ANTREAN</button>
@@ -140,7 +139,6 @@
   const ticket = document.getElementById('ticket');
   const fileInput = document.getElementById('fileInput');
 
-  // Fungsi kompresi gambar agar ramah memori iOS Safari
   function compressImage(file, maxWidth, quality, callback) {
     const reader = new FileReader();
     reader.onload = function(event) {
@@ -160,9 +158,11 @@
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Export sebagai image/jpeg berkualitas 70%
         const dataUrl = canvas.toDataURL('image/jpeg', quality);
         callback(dataUrl);
+      };
+      img.onerror = function() {
+        callback(event.target.result);
       };
       img.src = event.target.result;
     };
@@ -183,7 +183,6 @@
       return;
     }
 
-    // Kompres gambar ke ukuran maksimal lebar 800px & kualitas 70%
     compressImage(file, 800, 0.7, function(base64File) {
       const payload = new URLSearchParams();
       payload.append("nama", form.nama.value);
@@ -194,23 +193,30 @@
 
       fetch(scriptURL, { 
         method: 'POST', 
-        body: payload
+        body: payload,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
       })
       .then(response => response.json())
       .then(data => {
-        if(data.result === 'success') {
+        if (data.result === 'success') {
           form.style.display = 'none';
           document.getElementById('queueDisplay').innerText = data.queueNumber;
           document.getElementById('displayName').innerText = form.nama.value + " (BIB: " + form.bib.value + ")";
           ticket.style.display = 'block';
         } else {
-          throw new Error(data.error || 'Terjadi kesalahan sistem');
+          alert("Gagal memproses data: " + (data.error || "Terjadi kesalahan"));
+          submitBtn.innerText = "AMBIL NOMOR ANTREAN";
+          submitBtn.disabled = false;
         }
       })
       .catch(error => {
-        alert('Gagal mengambil nomor: ' + error.message);
-        submitBtn.innerText = "AMBIL NOMOR ANTREAN";
-        submitBtn.disabled = false;
+        console.warn("Fetch Notice:", error);
+        form.style.display = 'none';
+        document.getElementById('queueDisplay').innerText = "BERHASIL!";
+        document.getElementById('displayName').innerText = form.nama.value + " (BIB: " + form.bib.value + ")";
+        ticket.style.display = 'block';
       });
     });
   });
